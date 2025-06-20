@@ -90,7 +90,7 @@ class FlutterLongScreenshot {
       await pdfFile.writeAsBytes(await pdf.save());
 
       // Share the PDF
-      await Share.shareXFiles([XFile(pdfPath)], text: 'Screenshot PDF');
+      await SharePlus.instance.share(ShareParams(files: [XFile(pdfPath)], text: 'Screenshot PDF'));
 
       return pdfPath;
     } catch (e) {
@@ -237,7 +237,7 @@ class FlutterLongScreenshot {
       await imageFile.writeAsBytes(imageData);
 
       // Share the image
-      await Share.shareXFiles([XFile(imagePath)], text: 'Screenshot');
+      await SharePlus.instance.share(ShareParams(files: [XFile(imagePath)], text: 'Screenshot'));
 
       return imagePath;
     } catch (e) {

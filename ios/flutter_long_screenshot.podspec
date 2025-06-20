@@ -4,14 +4,14 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_long_screenshot'
-  s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.version          = '1.0.0'
+  s.summary          = 'A Flutter plugin for capturing long screenshots of widgets without auto-scrolling.'
   s.description      = <<-DESC
-A new Flutter plugin project.
+A Flutter plugin for capturing long screenshots of widgets without auto-scrolling, with support for PDF conversion and sharing.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/jay-benzatine/flutter_long_screenshot'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Jay Benzatine' => 'your-email@example.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'

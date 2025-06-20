@@ -176,7 +176,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             border: Border.all(
-              color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
             ),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -195,7 +195,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
               Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
               ),
             ],
           ),
@@ -572,7 +572,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                 Text(
                   '${users.length} Users',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.7),
+                        color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
                       ),
                 ),
               ],
@@ -593,7 +593,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -645,7 +645,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                       Text(
                         user['role'],
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                             ),
                       ),
                       const SizedBox(height: 4),
@@ -654,13 +654,13 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                           Icon(
                             Icons.business,
                             size: 16,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                           const SizedBox(width: 4),
                           Text(
                             user['company'],
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                                 ),
                           ),
                         ],
@@ -671,13 +671,13 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                           Icon(
                             Icons.email,
                             size: 16,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                           const SizedBox(width: 4),
                           Text(
                             user['email'],
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                                 ),
                           ),
                         ],
@@ -712,7 +712,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -772,7 +772,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                       Text(
                         'Scroll through the content below and tap the button to capture a screenshot of the entire content.',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                             ),
                         textAlign: TextAlign.center,
                       ),
@@ -788,7 +788,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
           ),
           if (_isCapturing)
             Container(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withValues(alpha: 0.5),
               child: const Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
