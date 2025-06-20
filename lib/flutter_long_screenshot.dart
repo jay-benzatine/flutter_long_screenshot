@@ -21,23 +21,15 @@ class FlutterLongScreenshot {
   /// [pixelRatio] - The pixel ratio for the screenshot (default: 3.0)
   /// [quality] - The quality of the screenshot (0.0 to 1.0, default: 1.0)
   /// Returns a [Uint8List] containing the PNG image data
-  static Future<Uint8List> captureLongScreenshot({
-    required GlobalKey key,
-    double pixelRatio = 3.0,
-    double quality = 1.0,
-  }) async {
+  static Future<Uint8List> captureLongScreenshot({required GlobalKey key, double pixelRatio = 3.0, double quality = 1.0}) async {
     try {
       final RenderRepaintBoundary boundary = key.currentContext!.findRenderObject() as RenderRepaintBoundary;
 
       // Create image with full width
-      final ui.Image image = await boundary.toImage(
-        pixelRatio: pixelRatio,
-      );
+      final ui.Image image = await boundary.toImage(pixelRatio: pixelRatio);
 
       // Convert to byte data with quality control
-      final ByteData? byteData = await image.toByteData(
-        format: ui.ImageByteFormat.png,
-      );
+      final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
 
       if (byteData == null) {
         throw Exception('Failed to capture screenshot');
@@ -72,10 +64,7 @@ class FlutterLongScreenshot {
       final double height = image.height.toDouble();
 
       // Create PDF document
-      final pdf = pw.Document(
-        version: PdfVersion.pdf_1_5,
-        compress: true,
-      );
+      final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
 
       // Convert image bytes to PdfImage
       final pdfImage = pw.MemoryImage(imageData);
@@ -86,11 +75,7 @@ class FlutterLongScreenshot {
           pageFormat: PdfPageFormat(width, height, marginAll: 0),
           build: (context) {
             return pw.Center(
-              child: pw.Image(
-                pdfImage,
-                width: width,
-                height: height,
-              ),
+              child: pw.Image(pdfImage, width: width, height: height),
             );
           },
         ),
@@ -105,10 +90,7 @@ class FlutterLongScreenshot {
       await pdfFile.writeAsBytes(await pdf.save());
 
       // Share the PDF
-      await Share.shareXFiles(
-        [XFile(pdfPath)],
-        text: 'Screenshot PDF',
-      );
+      await Share.shareXFiles([XFile(pdfPath)], text: 'Screenshot PDF');
 
       return pdfPath;
     } catch (e) {
@@ -122,11 +104,7 @@ class FlutterLongScreenshot {
   /// [fileName] - The name of the file (without extension)
   /// [openAfterSave] - Whether to open the file after saving (default: true)
   /// Returns the path to the saved PDF file
-  static Future<String> convertToPdfAndSave({
-    required Uint8List imageData,
-    required String fileName,
-    bool openAfterSave = true,
-  }) async {
+  static Future<String> convertToPdfAndSave({required Uint8List imageData, required String fileName, bool openAfterSave = true}) async {
     try {
       // Get image dimensions
       final ui.Codec codec = await ui.instantiateImageCodec(imageData);
@@ -136,10 +114,7 @@ class FlutterLongScreenshot {
       final double height = image.height.toDouble();
 
       // Create PDF document
-      final pdf = pw.Document(
-        version: PdfVersion.pdf_1_5,
-        compress: true,
-      );
+      final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
 
       // Convert image bytes to PdfImage
       final pdfImage = pw.MemoryImage(imageData);
@@ -150,11 +125,7 @@ class FlutterLongScreenshot {
           pageFormat: PdfPageFormat(width, height, marginAll: 0),
           build: (context) {
             return pw.Center(
-              child: pw.Image(
-                pdfImage,
-                width: width,
-                height: height,
-              ),
+              child: pw.Image(pdfImage, width: width, height: height),
             );
           },
         ),
@@ -193,9 +164,7 @@ class FlutterLongScreenshot {
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
     final ui.Image image = frameInfo.image;
 
-    final ByteData? compressedData = await image.toByteData(
-      format: ui.ImageByteFormat.png,
-    );
+    final ByteData? compressedData = await image.toByteData(format: ui.ImageByteFormat.png);
 
     if (compressedData == null) {
       throw Exception('Failed to compress image');
@@ -223,11 +192,7 @@ class FlutterLongScreenshot {
   /// [fileName] - The name of the file (without extension)
   /// [openAfterSave] - Whether to open the file after saving (default: true)
   /// Returns the path to the saved file
-  static Future<String> saveToDownloadsAndOpen({
-    required Uint8List imageData,
-    required String fileName,
-    bool openAfterSave = true,
-  }) async {
+  static Future<String> saveToDownloadsAndOpen({required Uint8List imageData, required String fileName, bool openAfterSave = true}) async {
     try {
       // Get the downloads directory
       final Directory? downloadsDir = await getDownloadsDirectory();
@@ -272,10 +237,7 @@ class FlutterLongScreenshot {
       await imageFile.writeAsBytes(imageData);
 
       // Share the image
-      await Share.shareXFiles(
-        [XFile(imagePath)],
-        text: 'Screenshot',
-      );
+      await Share.shareXFiles([XFile(imagePath)], text: 'Screenshot');
 
       return imagePath;
     } catch (e) {
