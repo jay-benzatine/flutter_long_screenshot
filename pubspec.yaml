@@ -1,6 +1,6 @@
 name: flutter_long_screenshot
 description: A Flutter plugin for capturing long screenshots of widgets without auto-scrolling, with support for PDF conversion and sharing.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/jay-benzatine/flutter_long_screenshot
 repository: https://github.com/jay-benzatine/flutter_long_screenshot
 issue_tracker: https://github.com/jay-benzatine/flutter_long_screenshot/issues
