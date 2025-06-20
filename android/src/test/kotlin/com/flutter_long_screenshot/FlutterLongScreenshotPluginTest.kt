@@ -1,4 +1,4 @@
-package com.centurycity.flutter_long_screenshot
+package com.flutter_long_screenshot
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

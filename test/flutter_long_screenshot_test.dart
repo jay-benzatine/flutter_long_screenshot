@@ -14,11 +14,7 @@ void main() {
         home: Scaffold(
           body: RepaintBoundary(
             key: screenshotKey,
-            child: Container(
-              width: 100,
-              height: 100,
-              color: Colors.blue,
-            ),
+            child: Container(width: 100, height: 100, color: Colors.blue),
           ),
         ),
       ),
@@ -29,10 +25,11 @@ void main() {
 
     // Test screenshot capture
     try {
-      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(
-        key: screenshotKey,
-        pixelRatio: 1.0,
-      );
+      final Uint8List imageData =
+          await FlutterLongScreenshot.captureLongScreenshot(
+            key: screenshotKey,
+            pixelRatio: 1.0,
+          );
       expect(imageData, isNotEmpty);
     } catch (e) {
       fail('Screenshot capture failed: $e');

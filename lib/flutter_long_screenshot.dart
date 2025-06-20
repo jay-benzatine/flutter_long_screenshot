@@ -21,15 +21,22 @@ class FlutterLongScreenshot {
   /// [pixelRatio] - The pixel ratio for the screenshot (default: 3.0)
   /// [quality] - The quality of the screenshot (0.0 to 1.0, default: 1.0)
   /// Returns a [Uint8List] containing the PNG image data
-  static Future<Uint8List> captureLongScreenshot({required GlobalKey key, double pixelRatio = 3.0, double quality = 1.0}) async {
+  static Future<Uint8List> captureLongScreenshot({
+    required GlobalKey key,
+    double pixelRatio = 3.0,
+    double quality = 1.0,
+  }) async {
     try {
-      final RenderRepaintBoundary boundary = key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final RenderRepaintBoundary boundary =
+          key.currentContext!.findRenderObject() as RenderRepaintBoundary;
 
       // Create image with full width
       final ui.Image image = await boundary.toImage(pixelRatio: pixelRatio);
 
       // Convert to byte data with quality control
-      final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      final ByteData? byteData = await image.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
 
       if (byteData == null) {
         throw Exception('Failed to capture screenshot');
@@ -39,7 +46,10 @@ class FlutterLongScreenshot {
       if (quality < 1.0) {
         // Convert to PNG with reduced quality
         final Uint8List originalBytes = byteData.buffer.asUint8List();
-        final Uint8List compressedBytes = await _compressImage(originalBytes, quality);
+        final Uint8List compressedBytes = await _compressImage(
+          originalBytes,
+          quality,
+        );
         return compressedBytes;
       }
 
@@ -54,7 +64,10 @@ class FlutterLongScreenshot {
   /// [imageData] - The image data to convert
   /// [fileName] - The name of the file (without extension)
   /// Returns the path to the saved PDF file
-  static Future<String> convertToPdfAndShare(Uint8List imageData, String fileName) async {
+  static Future<String> convertToPdfAndShare(
+    Uint8List imageData,
+    String fileName,
+  ) async {
     try {
       // Get image dimensions
       final ui.Codec codec = await ui.instantiateImageCodec(imageData);
@@ -90,7 +103,9 @@ class FlutterLongScreenshot {
       await pdfFile.writeAsBytes(await pdf.save());
 
       // Share the PDF
-      await SharePlus.instance.share(ShareParams(files: [XFile(pdfPath)], text: 'Screenshot PDF'));
+      await SharePlus.instance.share(
+        ShareParams(files: [XFile(pdfPath)], text: 'Screenshot PDF'),
+      );
 
       return pdfPath;
     } catch (e) {
@@ -104,7 +119,11 @@ class FlutterLongScreenshot {
   /// [fileName] - The name of the file (without extension)
   /// [openAfterSave] - Whether to open the file after saving (default: true)
   /// Returns the path to the saved PDF file
-  static Future<String> convertToPdfAndSave({required Uint8List imageData, required String fileName, bool openAfterSave = true}) async {
+  static Future<String> convertToPdfAndSave({
+    required Uint8List imageData,
+    required String fileName,
+    bool openAfterSave = true,
+  }) async {
     try {
       // Get image dimensions
       final ui.Codec codec = await ui.instantiateImageCodec(imageData);
@@ -153,7 +172,9 @@ class FlutterLongScreenshot {
         if (result.type != ResultType.done) {
           // On iOS, if opening fails, try sharing instead
           if (Platform.isIOS) {
-            await SharePlus.instance.share(ShareParams(files: [XFile(pdfPath)], text: 'Screenshot PDF'));
+            await SharePlus.instance.share(
+              ShareParams(files: [XFile(pdfPath)], text: 'Screenshot PDF'),
+            );
           } else {
             throw Exception('Failed to open file: ${result.message}');
           }
@@ -167,14 +188,19 @@ class FlutterLongScreenshot {
   }
 
   /// Compresses the image data with the specified quality
-  static Future<Uint8List> _compressImage(Uint8List bytes, double quality) async {
+  static Future<Uint8List> _compressImage(
+    Uint8List bytes,
+    double quality,
+  ) async {
     // For now, we'll use a simple approach to reduce quality
     // In a production environment, you might want to use a proper image compression library
     final ui.Codec codec = await ui.instantiateImageCodec(bytes);
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
     final ui.Image image = frameInfo.image;
 
-    final ByteData? compressedData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final ByteData? compressedData = await image.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
 
     if (compressedData == null) {
       throw Exception('Failed to compress image');
@@ -188,7 +214,10 @@ class FlutterLongScreenshot {
   /// [imageData] - The image data to save
   /// [fileName] - The name of the file (without extension)
   /// Returns the path to the saved file
-  static Future<String> saveScreenshot(Uint8List imageData, String fileName) async {
+  static Future<String> saveScreenshot(
+    Uint8List imageData,
+    String fileName,
+  ) async {
     final Directory tempDir = await getTemporaryDirectory();
     final String filePath = '${tempDir.path}/$fileName.png';
     final File file = File(filePath);
@@ -202,7 +231,11 @@ class FlutterLongScreenshot {
   /// [fileName] - The name of the file (without extension)
   /// [openAfterSave] - Whether to open the file after saving (default: true)
   /// Returns the path to the saved file
-  static Future<String> saveToDownloadsAndOpen({required Uint8List imageData, required String fileName, bool openAfterSave = true}) async {
+  static Future<String> saveToDownloadsAndOpen({
+    required Uint8List imageData,
+    required String fileName,
+    bool openAfterSave = true,
+  }) async {
     try {
       // Get appropriate directory based on platform
       Directory saveDir;
@@ -228,7 +261,9 @@ class FlutterLongScreenshot {
         if (result.type != ResultType.done) {
           // On iOS, if opening fails, try sharing instead
           if (Platform.isIOS) {
-            await SharePlus.instance.share(ShareParams(files: [XFile(filePath)], text: 'Screenshot'));
+            await SharePlus.instance.share(
+              ShareParams(files: [XFile(filePath)], text: 'Screenshot'),
+            );
           } else {
             throw Exception('Failed to open file: ${result.message}');
           }
@@ -246,7 +281,10 @@ class FlutterLongScreenshot {
   /// [imageData] - The image data to save
   /// [fileName] - The name of the file (without extension)
   /// Returns the path to the saved file
-  static Future<String> saveToPhotoLibrary(Uint8List imageData, String fileName) async {
+  static Future<String> saveToPhotoLibrary(
+    Uint8List imageData,
+    String fileName,
+  ) async {
     try {
       if (Platform.isIOS) {
         // On iOS, save to photo library using share_plus
@@ -256,11 +294,17 @@ class FlutterLongScreenshot {
         await imageFile.writeAsBytes(imageData);
 
         // Share to photo library
-        await SharePlus.instance.share(ShareParams(files: [XFile(imagePath)], text: 'Screenshot'));
+        await SharePlus.instance.share(
+          ShareParams(files: [XFile(imagePath)], text: 'Screenshot'),
+        );
         return imagePath;
       } else {
         // On Android, use the regular downloads method
-        return await saveToDownloadsAndOpen(imageData: imageData, fileName: fileName, openAfterSave: false);
+        return await saveToDownloadsAndOpen(
+          imageData: imageData,
+          fileName: fileName,
+          openAfterSave: false,
+        );
       }
     } catch (e) {
       throw Exception('Failed to save screenshot to photo library: $e');
@@ -272,7 +316,10 @@ class FlutterLongScreenshot {
   /// [imageData] - The image data to share
   /// [fileName] - The name of the file (without extension)
   /// Returns the path to the saved image file
-  static Future<String> shareScreenshot(Uint8List imageData, String fileName) async {
+  static Future<String> shareScreenshot(
+    Uint8List imageData,
+    String fileName,
+  ) async {
     try {
       // Get temporary directory
       final Directory tempDir = await getTemporaryDirectory();
@@ -283,7 +330,9 @@ class FlutterLongScreenshot {
       await imageFile.writeAsBytes(imageData);
 
       // Share the image
-      await SharePlus.instance.share(ShareParams(files: [XFile(imagePath)], text: 'Screenshot'));
+      await SharePlus.instance.share(
+        ShareParams(files: [XFile(imagePath)], text: 'Screenshot'),
+      );
 
       return imagePath;
     } catch (e) {

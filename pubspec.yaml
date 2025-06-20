@@ -46,7 +46,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.centurycity.flutter_long_screenshot
+        package: com.flutter_long_screenshot
         pluginClass: FlutterLongScreenshotPlugin
       ios:
         pluginClass: FlutterLongScreenshotPlugin

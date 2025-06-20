@@ -1,4 +1,4 @@
-package com.centurycity.flutter_long_screenshot_example
+package com.flutter_long_screenshot_example
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -7,7 +7,9 @@ import 'package:flutter_long_screenshot/flutter_long_screenshot.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Screenshot capture test with method channel', (WidgetTester tester) async {
+  testWidgets('Screenshot capture test with method channel', (
+    WidgetTester tester,
+  ) async {
     // Create a test widget with a GlobalKey
     final GlobalKey screenshotKey = GlobalKey();
 
@@ -17,11 +19,7 @@ void main() {
         home: Scaffold(
           body: RepaintBoundary(
             key: screenshotKey,
-            child: Container(
-              width: 100,
-              height: 100,
-              color: Colors.blue,
-            ),
+            child: Container(width: 100, height: 100, color: Colors.blue),
           ),
         ),
       ),
@@ -32,10 +30,11 @@ void main() {
 
     // Test screenshot capture
     try {
-      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(
-        key: screenshotKey,
-        pixelRatio: 1.0,
-      );
+      final Uint8List imageData =
+          await FlutterLongScreenshot.captureLongScreenshot(
+            key: screenshotKey,
+            pixelRatio: 1.0,
+          );
       expect(imageData, isNotEmpty);
     } catch (e) {
       fail('Screenshot capture failed: $e');
