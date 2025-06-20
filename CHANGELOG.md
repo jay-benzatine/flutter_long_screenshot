@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-12-19
+
+### Fixed
+
+- **Fixed iOS file path handling** - now uses Documents directory instead of Downloads
+- **Fixed iOS PDF opening issues** - automatic fallback to sharing when opening fails
+- **Fixed iOS screenshot saving** - proper platform-specific file handling
+- Fixed missing XFile import from cross_file package
+- Added missing iOS photo library permissions in Info.plist files
+
+### Added
+
+- **Platform-optimized file handling** (Downloads on Android, Documents on iOS)
+- **Automatic fallback to sharing** on iOS when file opening fails
+- Platform-specific user messages for better UX
+- New `saveToPhotoLibrary` method for iOS-appropriate file saving
+
+### Technical Improvements
+
+- **Platform-specific file handling logic**
+- **iOS-native sharing integration**
+- Better error handling for platform differences
+- Improved user experience on iOS devices
+
 ## [1.0.0] - 2024-12-19
 
 ### Added
@@ -15,8 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Share screenshots directly as images or PDFs
 - Quality control for captured screenshots
 - Support for both Android and iOS platforms
-- **Platform-optimized file handling** (Downloads on Android, Documents on iOS)
-- **Automatic fallback to sharing** on iOS when file opening fails
 - Comprehensive example app demonstrating all features
 - Complete documentation with usage examples
 
@@ -24,11 +46,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated Android Gradle Plugin from 7.3.0 to 8.3.0 for Flutter compatibility
 - Added NDK version 26.3.11579264 for integration_test compatibility
-- Added missing iOS photo library permissions in Info.plist files
-- Fixed missing XFile import from cross_file package
-- **Fixed iOS file path handling** - now uses Documents directory instead of Downloads
-- **Fixed iOS PDF opening issues** - automatic fallback to sharing when opening fails
-- **Fixed iOS screenshot saving** - proper platform-specific file handling
 - Updated README with correct repository links
 - Removed unnecessary NDK configuration from main plugin (only needed for example app)
 - Updated compileSdk to 35 for latest Android compatibility
@@ -42,8 +59,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive test coverage including unit tests and integration tests
 - Proper error handling and exception management
 - Optimized build times (12.4s vs previous 114.2s)
-- **Platform-specific file handling logic**
-- **iOS-native sharing integration**
 
 ### Dependencies
 

@@ -18,7 +18,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_long_screenshot: ^1.0.0
+  flutter_long_screenshot: ^1.0.1
 ```
 
 ## Usage
