@@ -1,6 +1,7 @@
-import 'dart:typed_data';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_long_screenshot/flutter_long_screenshot.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,26 +52,17 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
             Container(
               width: 40,
               height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
+              decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
             ),
             const SizedBox(height: 24),
-            Text(
-              'Save Screenshot',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            Text('Save Screenshot', style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Image Quality',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  Text('Image Quality', style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -90,16 +82,10 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
+                        decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer, borderRadius: BorderRadius.circular(16)),
                         child: Text(
                           '${(_quality * 100).round()}%',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -161,12 +147,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
     );
   }
 
-  Widget _buildOptionButton(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildOptionButton(BuildContext context, {required IconData icon, required String label, required VoidCallback onTap}) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -175,28 +156,16 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
-            ),
+            border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
             children: [
-              Icon(
-                icon,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              Icon(icon, color: Theme.of(context).colorScheme.primary),
               const SizedBox(width: 16),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text(label, style: Theme.of(context).textTheme.titleMedium),
               const Spacer(),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-              ),
+              Icon(Icons.arrow_forward_ios, size: 16, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
             ],
           ),
         ),
@@ -208,34 +177,17 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
     _setCapturing(true);
     try {
       // Capture the screenshot
-      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(
-        key: _screenshotKey,
-        pixelRatio: 3.0,
-        quality: _quality,
-      );
+      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(key: _screenshotKey, pixelRatio: 3.0, quality: _quality);
 
       // Convert to PDF and share
-      final String pdfPath = await FlutterLongScreenshot.convertToPdfAndShare(
-        imageData,
-        'long_screenshot_${DateTime.now().millisecondsSinceEpoch}',
-      );
+      final String pdfPath = await FlutterLongScreenshot.convertToPdfAndShare(imageData, 'long_screenshot_${DateTime.now().millisecondsSinceEpoch}');
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('PDF shared: $pdfPath'),
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('PDF shared: $pdfPath'), duration: const Duration(seconds: 3)));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
       }
     } finally {
       _setCapturing(false);
@@ -246,11 +198,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
     _setCapturing(true);
     try {
       // Capture the screenshot
-      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(
-        key: _screenshotKey,
-        pixelRatio: 3.0,
-        quality: _quality,
-      );
+      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(key: _screenshotKey, pixelRatio: 3.0, quality: _quality);
 
       // Convert to PDF and save
       final String pdfPath = await FlutterLongScreenshot.convertToPdfAndSave(
@@ -259,21 +207,13 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('PDF saved: $pdfPath'),
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        final String platformMessage = Platform.isIOS ? 'PDF saved to Documents and shared' : 'PDF saved: $pdfPath';
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(platformMessage), duration: const Duration(seconds: 3)));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
       }
     } finally {
       _setCapturing(false);
@@ -284,34 +224,22 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
     _setCapturing(true);
     try {
       // Capture the screenshot
-      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(
-        key: _screenshotKey,
-        pixelRatio: 3.0,
-        quality: _quality,
-      );
+      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(key: _screenshotKey, pixelRatio: 3.0, quality: _quality);
 
-      // Save to Downloads and open
+      // Save using platform-appropriate method
       final String filePath = await FlutterLongScreenshot.saveToDownloadsAndOpen(
         imageData: imageData,
         fileName: 'long_screenshot_${DateTime.now().millisecondsSinceEpoch}',
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Screenshot saved to Downloads: $filePath'),
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        final String platformMessage = Platform.isIOS ? 'Screenshot saved to Documents and shared' : 'Screenshot saved to Downloads: $filePath';
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(platformMessage), duration: const Duration(seconds: 3)));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
       }
     } finally {
       _setCapturing(false);
@@ -322,34 +250,17 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
     _setCapturing(true);
     try {
       // Capture the screenshot
-      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(
-        key: _screenshotKey,
-        pixelRatio: 3.0,
-        quality: _quality,
-      );
+      final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(key: _screenshotKey, pixelRatio: 3.0, quality: _quality);
 
       // Share the image
-      final String imagePath = await FlutterLongScreenshot.shareScreenshot(
-        imageData,
-        'screenshot_${DateTime.now().millisecondsSinceEpoch}',
-      );
+      final String imagePath = await FlutterLongScreenshot.shareScreenshot(imageData, 'screenshot_${DateTime.now().millisecondsSinceEpoch}');
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Screenshot shared: $imagePath'),
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Screenshot shared: $imagePath'), duration: const Duration(seconds: 3)));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
       }
     } finally {
       _setCapturing(false);
@@ -557,23 +468,18 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
             color: Theme.of(context).colorScheme.primaryContainer,
             child: Row(
               children: [
-                Icon(
-                  Icons.people,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
+                Icon(Icons.people, color: Theme.of(context).colorScheme.onPrimaryContainer),
                 const SizedBox(width: 12),
                 Text(
                   'User Directory',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
                 ),
                 const Spacer(),
                 Text(
                   '${users.length} Users',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.7)),
                 ),
               ],
             ),
@@ -591,13 +497,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 2))],
       ),
       child: Material(
         color: Colors.transparent,
@@ -605,12 +505,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
           borderRadius: BorderRadius.circular(12),
           onTap: () {
             // Handle user card tap
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Selected ${user['name']}'),
-                duration: const Duration(seconds: 1),
-              ),
-            );
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Selected ${user['name']}'), duration: const Duration(seconds: 1)));
           },
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -618,10 +513,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Profile photo
-                CircleAvatar(
-                  radius: 30,
-                  backgroundImage: NetworkImage(user['avatar']),
-                ),
+                CircleAvatar(radius: 30, backgroundImage: NetworkImage(user['avatar'])),
                 const SizedBox(width: 16),
                 // User details
                 Expanded(
@@ -631,12 +523,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(
-                              user['name'],
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
+                            child: Text(user['name'], style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                           ),
                           _buildStatusIndicator(user['status']),
                         ],
@@ -644,41 +531,33 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                       const SizedBox(height: 4),
                       Text(
                         user['role'],
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                            ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
                       ),
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(
-                            Icons.business,
-                            size: 16,
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-                          ),
+                          Icon(Icons.business, size: 16, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
                           const SizedBox(width: 4),
                           Text(
                             user['company'],
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-                                ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          Icon(
-                            Icons.email,
-                            size: 16,
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-                          ),
+                          Icon(Icons.email, size: 16, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
                           const SizedBox(width: 4),
                           Text(
                             user['email'],
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-                                ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
                           ),
                         ],
                       ),
@@ -711,29 +590,19 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             width: 8,
             height: 8,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
           const SizedBox(width: 4),
           Text(
             status,
-            style: TextStyle(
-              color: color,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w500),
           ),
         ],
       ),
@@ -743,11 +612,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Long Screenshot Demo'),
-        centerTitle: true,
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('Long Screenshot Demo'), centerTitle: true, elevation: 0),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -757,32 +622,19 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.screenshot,
-                        size: 48,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      Icon(Icons.screenshot, size: 48, color: Theme.of(context).colorScheme.primary),
                       const SizedBox(height: 16),
-                      Text(
-                        'Capture Long Screenshots',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        textAlign: TextAlign.center,
-                      ),
+                      Text('Capture Long Screenshots', style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center),
                       const SizedBox(height: 8),
                       Text(
                         'Scroll through the content below and tap the button to capture a screenshot of the entire content.',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                            ),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
                         textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
-                RepaintBoundary(
-                  key: _screenshotKey,
-                  child: _buildLongContent(),
-                ),
+                RepaintBoundary(key: _screenshotKey, child: _buildLongContent()),
               ],
             ),
           ),
@@ -795,13 +647,7 @@ class _LongScreenshotDemoState extends State<LongScreenshotDemo> {
                   children: [
                     CircularProgressIndicator(),
                     SizedBox(height: 16),
-                    Text(
-                      'Capturing screenshot...',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
+                    Text('Capturing screenshot...', style: TextStyle(color: Colors.white, fontSize: 16)),
                   ],
                 ),
               ),

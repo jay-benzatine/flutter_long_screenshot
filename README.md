@@ -9,6 +9,8 @@ A Flutter plugin for capturing long screenshots of widgets without auto-scrollin
 - Share screenshots directly as images or PDFs
 - Quality control for captured screenshots
 - Support for both Android and iOS
+- **Platform-optimized file handling** (Downloads on Android, Documents on iOS)
+- **Automatic fallback to sharing** on iOS when file opening fails
 
 ## Installation
 
@@ -43,13 +45,13 @@ final Uint8List imageData = await FlutterLongScreenshot.captureLongScreenshot(
   quality: 1.0,
 );
 
-// Save as image
+// Save as image (platform-optimized)
 final String imagePath = await FlutterLongScreenshot.saveToDownloadsAndOpen(
   imageData: imageData,
   fileName: 'screenshot_${DateTime.now().millisecondsSinceEpoch}',
 );
 
-// Save as PDF
+// Save as PDF (platform-optimized)
 final String pdfPath = await FlutterLongScreenshot.convertToPdfAndSave(
   imageData: imageData,
   fileName: 'screenshot_${DateTime.now().millisecondsSinceEpoch}',
@@ -67,6 +69,21 @@ final String sharedPdfPath = await FlutterLongScreenshot.convertToPdfAndShare(
   'screenshot_${DateTime.now().millisecondsSinceEpoch}',
 );
 ```
+
+## Platform Differences
+
+### Android
+
+- Files are saved to the Downloads directory
+- Files can be opened directly with system apps
+- Full file path access
+
+### iOS
+
+- Files are saved to the Documents directory
+- If file opening fails, automatically falls back to sharing
+- Uses iOS-native sharing mechanisms
+- Better integration with iOS file management
 
 ## Required Permissions
 
@@ -92,7 +109,7 @@ Add these keys to your `Info.plist`:
 
 ## Example
 
-Check out the [example](https://github.com/YOUR_USERNAME/flutter_long_screenshot/tree/main/example) directory for a complete working example.
+Check out the [example](https://github.com/jay-benzatine/flutter_long_screenshot/tree/main/example) directory for a complete working example.
 
 ## Contributing
 

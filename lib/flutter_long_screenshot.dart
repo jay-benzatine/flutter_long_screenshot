@@ -131,14 +131,19 @@ class FlutterLongScreenshot {
         ),
       );
 
-      // Get downloads directory
-      final Directory? downloadsDir = await getDownloadsDirectory();
-      if (downloadsDir == null) {
-        throw Exception('Could not access downloads directory');
+      // Get appropriate directory based on platform
+      Directory saveDir;
+      if (Platform.isIOS) {
+        // On iOS, use documents directory
+        saveDir = await getApplicationDocumentsDirectory();
+      } else {
+        // On Android, try downloads directory, fallback to documents
+        final Directory? downloadsDir = await getDownloadsDirectory();
+        saveDir = downloadsDir ?? await getApplicationDocumentsDirectory();
       }
 
       // Save PDF
-      final String pdfPath = '${downloadsDir.path}/$fileName.pdf';
+      final String pdfPath = '${saveDir.path}/$fileName.pdf';
       final File pdfFile = File(pdfPath);
       await pdfFile.writeAsBytes(await pdf.save());
 
@@ -146,7 +151,12 @@ class FlutterLongScreenshot {
       if (openAfterSave) {
         final result = await OpenFile.open(pdfPath);
         if (result.type != ResultType.done) {
-          throw Exception('Failed to open file: ${result.message}');
+          // On iOS, if opening fails, try sharing instead
+          if (Platform.isIOS) {
+            await SharePlus.instance.share(ShareParams(files: [XFile(pdfPath)], text: 'Screenshot PDF'));
+          } else {
+            throw Exception('Failed to open file: ${result.message}');
+          }
         }
       }
 
@@ -194,14 +204,19 @@ class FlutterLongScreenshot {
   /// Returns the path to the saved file
   static Future<String> saveToDownloadsAndOpen({required Uint8List imageData, required String fileName, bool openAfterSave = true}) async {
     try {
-      // Get the downloads directory
-      final Directory? downloadsDir = await getDownloadsDirectory();
-      if (downloadsDir == null) {
-        throw Exception('Could not access downloads directory');
+      // Get appropriate directory based on platform
+      Directory saveDir;
+      if (Platform.isIOS) {
+        // On iOS, use documents directory
+        saveDir = await getApplicationDocumentsDirectory();
+      } else {
+        // On Android, try downloads directory, fallback to documents
+        final Directory? downloadsDir = await getDownloadsDirectory();
+        saveDir = downloadsDir ?? await getApplicationDocumentsDirectory();
       }
 
       // Create the file path
-      final String filePath = '${downloadsDir.path}/$fileName.png';
+      final String filePath = '${saveDir.path}/$fileName.png';
       final File file = File(filePath);
 
       // Save the file
@@ -211,13 +226,44 @@ class FlutterLongScreenshot {
       if (openAfterSave) {
         final result = await OpenFile.open(filePath);
         if (result.type != ResultType.done) {
-          throw Exception('Failed to open file: ${result.message}');
+          // On iOS, if opening fails, try sharing instead
+          if (Platform.isIOS) {
+            await SharePlus.instance.share(ShareParams(files: [XFile(filePath)], text: 'Screenshot'));
+          } else {
+            throw Exception('Failed to open file: ${result.message}');
+          }
         }
       }
 
       return filePath;
     } catch (e) {
       throw Exception('Failed to save screenshot to downloads: $e');
+    }
+  }
+
+  /// Saves the screenshot to the photo library (iOS) or downloads (Android)
+  ///
+  /// [imageData] - The image data to save
+  /// [fileName] - The name of the file (without extension)
+  /// Returns the path to the saved file
+  static Future<String> saveToPhotoLibrary(Uint8List imageData, String fileName) async {
+    try {
+      if (Platform.isIOS) {
+        // On iOS, save to photo library using share_plus
+        final Directory tempDir = await getTemporaryDirectory();
+        final String imagePath = '${tempDir.path}/$fileName.png';
+        final File imageFile = File(imagePath);
+        await imageFile.writeAsBytes(imageData);
+
+        // Share to photo library
+        await SharePlus.instance.share(ShareParams(files: [XFile(imagePath)], text: 'Screenshot'));
+        return imagePath;
+      } else {
+        // On Android, use the regular downloads method
+        return await saveToDownloadsAndOpen(imageData: imageData, fileName: fileName, openAfterSave: false);
+      }
+    } catch (e) {
+      throw Exception('Failed to save screenshot to photo library: $e');
     }
   }
 
